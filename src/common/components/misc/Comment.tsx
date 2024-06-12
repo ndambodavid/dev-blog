@@ -8,7 +8,7 @@ const CommentBox = () => {
     <Container maxW={'container.md'} my={10}>
       <Heading size={'md'}>LEAVE A COMMENT OR START A DISCUSSION</Heading>
       <Box my={10}>
-        <Giscus
+        {/* <Giscus
           repo={process.env.NEXT_PUBLIC_GISCUS_REPO}
           repoId={process.env.NEXT_PUBLIC_GISCUS_REPO_ID}
           category={process.env.NEXT_PUBLIC_GISCUS_CATEGORY}
@@ -22,7 +22,7 @@ const CommentBox = () => {
           loading="lazy"
           crossorigin="anonymous"
           
-        />
+        /> */}
       </Box>
     </Container>
   );

@@ -128,6 +128,79 @@ export async function getBlog(postSlug: any) {
   };
 }
 
+export async function getTags() {
+  const { data, error } = await client.query({
+    query: gql`
+      query TagsPage {
+        __type(name: "Tag") {
+          enumValues {
+            name
+          }
+        }
+      }
+    `
+  });
+
+  return {
+    props: {
+      tags: data?.__type?.enumValues,
+      error: error ? error.message : null
+    },
+    revalidate: 300
+  };
+}
+
+export async function getArticles() {
+  const { data, error } = await client.query({
+    query: gql`
+      query ArticlesPage {
+        posts(orderBy: createdAt_DESC, first: 12) {
+          featuredImage
+          id
+          customPublicationDate
+          excerpt
+          publishedAt
+          slug
+          sponsored
+          tags
+          title
+          content
+        }
+      }
+    `
+  });
+
+  return {
+    props: {
+      posts: data?.posts,
+      error: error ? error.message : null
+    },
+    revalidate: 300
+  };
+}
+
+export async function getCategories() {
+  const { data, error } = await client.query({
+    query: gql`
+      query CategoriesPage {
+        categories {
+          id
+          name
+          slug
+        }
+      }
+    `
+  });
+
+  return {
+    props: {
+      categories: data?.categories,
+      error: error ? error.message : null
+    },
+    revalidate: 300
+  };
+}
+
 // export async function getStaticPaths() {
 //   const { data } = await client.query({
 //     query: gql`

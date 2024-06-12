@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -11,10 +12,10 @@ import siteConfig from '../../../config/site.config';
 
 interface SearchPageProps {
   activeTab: number;
-  posts: any[]; // Adjust the type according to your data structure
-  snippets: any[]; // Adjust the type according to your data structure
-  categories: any[]; // Adjust the type according to your data structure
-  tags: any[]; // Adjust the type according to your data structure
+  posts?: any[]; // Adjust the type according to your data structure
+  snippets?: any[]; // Adjust the type according to your data structure
+  categories?: any[]; // Adjust the type according to your data structure
+  tags?: any[]; // Adjust the type according to your data structure
   error: any; // Adjust the type according to your error handling
 }
 
@@ -61,10 +62,8 @@ const SearchPage: React.FC<SearchPageProps> = ({
     } else if (activeTab === 2) {
       setQueriedCategories(data?.categories || categories);
     } else {
-      setQueriedTags(
-        (searchQuery &&
-          tags.filter((tag) => searchQuery === tag.name)) ||
-          tags
+      setQueriedTags(searchQuery && tags ?
+        tags.filter((tag) => searchQuery === tag.name) : []
       );
     }
     setVariableError(queryError || error);
