@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useLazyQuery } from '@apollo/client/react';
 
 import SearchPageBody from './components/SearchPageBody';
@@ -34,14 +34,14 @@ const SearchPage: React.FC<SearchPageProps> = ({
   const [queriedTags, setQueriedTags] = useState<any[]>([]);
   const [variableError, setVariableError] = useState<any>(null);
 
-  const router = useRouter();
-  const { query } = router;
+  // const router = useRouter();
+  const query = useSearchParams()
 
   const [getData, { data, loading, error: queryError }] = useLazyQuery(
     activeTab === 0
-      ? query.c
+      ? query.get('c')
         ? queries.GET_ARTICLES_MATCHING_CATEGORY
-        : query.t
+        : query.get('t')
         ? queries.GET_ARTICLES_MATCHING_TAG
         : queries.GET_ARTICLES
       : activeTab === 1
@@ -70,11 +70,11 @@ const SearchPage: React.FC<SearchPageProps> = ({
   }, [data, searchQuery, activeTab]);
 
   useEffect(() => {
-    if (query.c) {
-      setSearchQuery(query.c as string);
+    if (query.get('c')) {
+      setSearchQuery(query.get('c') as string);
       getData();
-    } else if (query.t) {
-      setSearchQuery(query.t as string);
+    } else if (query.get('t')) {
+      setSearchQuery(query.get('t') as string);
       getData();
     }
   }, [query]);
