@@ -9,49 +9,53 @@ import SearchPage from "@/components/search/SearchPage";
 import { gql } from "@apollo/client";
 import siteConfig from "../../../config/site.config";
 import { getTags } from "@/lib/fetch-data";
+import { Suspense } from "react";
 
 
 
 const Tags = async () => {
-    const {props} = await getTags();
-    return (
-      <>
-        <SEO
-          title={siteConfig.seo.pages.tags.title}
-          description={siteConfig.seo.pages.tags.description}
-          image={siteConfig.seo.pages.tags.image}
-          altText={siteConfig.seo.pages.tags.title}
-          canonical={`${process.env.NEXT_PUBLIC_SITE_URL}/tags`}
-          url={`${process.env.NEXT_PUBLIC_SITE_URL}/tags`}
-        />
-        <BreadcrumbSchemaMarkup
-          items={[
-            {
-              position: 1,
-              name: 'Home',
-              item: process.env.NEXT_PUBLIC_SITE_URL
-            },
-            {
-              position: 2,
-              name: 'Tags',
-              item: `${process.env.NEXT_PUBLIC_SITE_URL}/tags`
-            }
-          ]}
-        />
-        <Analytics />
-  
-        <Navbar />
-  
-        <main>
+  const { props } = await getTags();
+  return (
+    <>
+      <SEO
+        title={siteConfig.seo.pages.tags.title}
+        description={siteConfig.seo.pages.tags.description}
+        image={siteConfig.seo.pages.tags.image}
+        altText={siteConfig.seo.pages.tags.title}
+        canonical={`${process.env.NEXT_PUBLIC_SITE_URL}/tags`}
+        url={`${process.env.NEXT_PUBLIC_SITE_URL}/tags`}
+      />
+      <BreadcrumbSchemaMarkup
+        items={[
+          {
+            position: 1,
+            name: 'Home',
+            item: process.env.NEXT_PUBLIC_SITE_URL
+          },
+          {
+            position: 2,
+            name: 'Tags',
+            item: `${process.env.NEXT_PUBLIC_SITE_URL}/tags`
+          }
+        ]}
+      />
+      <Analytics />
+
+      <Navbar />
+
+      <main>
+        <Suspense>
           <SearchPage activeTab={3} tags={props?.tags} error={props?.error} />
-          <Newsletter />
-        </main>
-  
-        <Footer />
-      </>
-    );
-  };
-  
-  
-  
-  export default Tags;
+        </Suspense>
+
+        <Newsletter />
+      </main>
+
+      <Footer />
+    </>
+  );
+};
+
+
+
+export default Tags;
