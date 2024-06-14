@@ -11,7 +11,6 @@ import {
   useMediaQuery,
   Wrap
 } from '@chakra-ui/react';
-import { NextRouter, useRouter } from 'next/router';
 
 import ArticleCard from '@/common/UIElements/ArticleCard';
 import CategoryCard from '@/common/UIElements/CategoryCard';
@@ -19,15 +18,16 @@ import ErrorBox from '@/common/UIElements/ErrorBox';
 import SnippetCard from '@/common/UIElements/SnippetCard';
 import TagCard from '@/common/UIElements/TagCard';
 import { ParsedUrlQuery } from 'querystring';
+import { useSearchParams, useRouter, ReadonlyURLSearchParams } from 'next/navigation';
 
-const changeRoute = (tabIndex: number, router: string[] | NextRouter, query: ParsedUrlQuery) => {
+const changeRoute = (tabIndex: number, router: any, query: ReadonlyURLSearchParams) => {
   switch (tabIndex) {
     case 0:
       return router.push(
-        query.c
-          ? `/articles?c=${query.c}`
-          : query.t
-            ? `/articles?t=${query.t}`
+        query.get('c')
+          ? `/articles?c=${query.get('c')}`
+          : query.get('t')
+            ? `/articles?t=${query.get('t')}`
             : '/articles'
       );
     case 1:
@@ -53,13 +53,13 @@ const SearchPageBody = ({
   const [isLessThan480px] = useMediaQuery('(max-width: 480px)');
 
   const router = useRouter();
-  const { query } = router;
+  const params = useSearchParams();
 
   return (
     <>
       <Box p={[5, 10]}>
         <Tabs
-          onChange={(index) => changeRoute(index, router, query)}
+          onChange={(index) => changeRoute(index, router, params)}
           defaultIndex={activeTab}
           isLazy
         >
